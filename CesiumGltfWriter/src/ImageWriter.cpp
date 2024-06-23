@@ -65,7 +65,7 @@ void CesiumGltfWriter::writeImage(
     }
 
     else if (isExternalFileURI) {
-      if (!isDataBufferEmpty) {
+      if (isDataBufferEmpty) {
         const std::string culpableImage = "images[" + std::to_string(i) + "]";
         std::string error = culpableImage +
                             ".uri references an external file but " +
@@ -76,6 +76,7 @@ void CesiumGltfWriter::writeImage(
         return;
       }
 
+      j.KeyPrimitive("uri", *image.uri);
       writeGLTFCallback(*image.uri, image.cesium.pixelData);
     }
 
